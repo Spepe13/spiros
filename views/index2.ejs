@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Thesprotia</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+
+.navbar {
+margin-bottom: 0;
+border-radius: 0;
+}
+
+
+.row.content {height: 450px}
+
+
+.sidenav {
+padding-top: 20px;
+background-color: #f1f1f1;
+height: 100%;
+}
+
+
+footer {
+background-color: #555;
+color: white;
+padding: 15px;
+}
+
+
+@media screen and (max-width: 767px) {
+.sidenav {
+height: auto;
+padding: 15px;
+}
+.row.content {height:auto;} 
+}
+body {
+background-image: url("https://www.ferriesingreece.com/photos/destinations/ports/igoumenitsa-1-1920.jpg");
+background-color: #cccccc;
+}
+.dropdown-submenu {
+position: relative;
+}
+
+.dropdown-submenu .dropdown-menu {
+top: 0;
+left: 100%;
+margin-top: -1px;
+}
+
+.button5 {background-color: #555555;} 
+
+.autocomplete {
+
+position: relative;
+display: inline-block;
+}
+
+input {
+border: 1px solid transparent;
+background-color: #f1f1f1;
+padding: 10px;
+font-size: 16px;
+}
+
+input[type=text] {
+background-color: #f1f1f1;
+width: 100%;
+}
+.autocomplete-items {
+position: absolute;
+border: 1px solid #d4d4d4;
+border-bottom: none;
+border-top: none;
+z-index: 99;
+
+top: 100%;
+left: 0;
+right: 0;
+}
+
+.autocomplete-items div {
+padding: 10px;
+cursor: pointer;
+background-color: #000; 
+border-bottom: 1px solid #d4d4d4; 
+}
+
+.autocomplete-items div:hover {
+
+background-color: #000000; 
+}
+
+.autocomplete-active {
+
+background-color: DodgerBlue !important; 
+color: #ffffff; 
+}
+.dropbtn {
+background-color: #000000;
+color: white;
+padding: 16px;
+font-size: 16px;
+border: none;
+cursor: pointer;
+}
+
+.dropdown {
+position: relative;
+display: inline-block;
+}
+
+.dropdown-content {
+display: none;
+position: absolute;
+right: 0;
+min-width: 160px;
+box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+z-index: 1;
+}
+
+.dropdown-content a {
+color: black;
+padding: 12px 16px;
+text-decoration: none;
+display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropbtn {background-color: #000000;}
+</style>
+
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+<div class="container-fluid">
+<div class="navbar-header">
+<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>
+<span class="icon-bar"></span>                        
+</button>
+</div>
+<div class="collapse navbar-collapse" id="myNavbar">
+<ul class="nav navbar-nav">
+<li class="active"><a href="/">Home</a></li>
+<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Routes <span class="caret"></span></a>
+<ul class="dropdown-menu">
+<% troutes.forEach(function(route){%>
+<li><a>From: <%= route.from%></a></li>
+<li><a>To: <%= route.to%></a></li>
+<li><a>Company: <%= route.company%></a></li>
+<li><a>Days: <%= route.day%></a></li>
+<li><a>Hours: <%= route.hours%></a></li>
+<li><a>Kind: <%= route.kind%></a></li>
+<li><a>Price Ticket: <%= route.price%> euros</a></li><br><br>
+<%})%>
+
+</ul>
+</li>
+<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Travel Agencies <span class="caret"></span></a>
+<ul class="dropdown-menu">
+<%for(var i=0;i<ttravels.length;i++){%>
+<li class = "dropdown-submenu">
+<a class="test" tabindex="-1" href="#"><%= ttravels[i].name%><span class="caret"></span></a>
+<ul class="dropdown-menu">
+<li><a tabindex="-1">Address: <%=ttravels[i].travaddr%></a></li>
+<li><a tabindex="-1">Telephone: <%=ttravels[i].tel%></a></li>
+<li class="dropdown-submenu">
+<a class="test" href="#">Trips<span class="caret"></span></a>
+<ul class="dropdown-menu">
+
+<%if (i==0){%>
+<%var k =0;%>
+<%for(var j=0;j<ttrips.length;j++){%>
+<li>Codetrip: <%=ttrips[j].code%></li>
+<li>Start point: <%=ttrips[j].start%></li>
+<li>Destination: <%=ttrips[j].dest%></li>
+<li>Hours: <%=ttrips[j].hours%></li>
+<li>Price: <%=ttrips[j].price%> euros</li>
+
+<%while (k<tpackets.length){%>
+<%if(tpackets[k].pack==="Offer15" || tpackets[k].pack==="Offer16"){%>
+<li>Offer: Persons: <%=tpackets[k].person%> - Price: <%=tpackets[k].price%> euros</li><% break;%>
+<%}%>
+<%}%>
+<%k++;%>
+<br>
+<%}%>
+<%}%>
+<%if (i==1){%>
+<%for(var j=0;j<ttrips1.length;j++){%>
+<li>Codetrip: <%=ttrips1[j].code %></li>
+<li>Start point: <%=ttrips1[j].start %></li>
+<li>Destination: <%=ttrips1[j].dest %></li>
+<li>Hours: <%=ttrips1[j].hours %></li>
+<li>Price: <%=ttrips1[j].price %> euros</li>
+
+<%while (k<tpackets.length){%>
+<%if(tpackets[k].pack==="Offer13" || tpackets[k].pack==="Offer14"){%>
+<li>Offer: Persons: <%=tpackets[k].person%> - Price: <%=tpackets[k].price%> euros</li><% break;%>
+<%}%>
+<%}%>
+<%k++;%>
+<br>
+<%}%>
+<%}%>
+<%if (i==2){%>
+<%for(var j=0;j<ttrips2.length;j++){%>										
+<li>Codetrip: <%=ttrips2[j].code %></li>
+<li>Start point: <%=ttrips2[j].start %></li>
+<li>Destination: <%=ttrips2[j].dest %></li>
+<li>Hours: <%=ttrips2[j].hours %></li>
+<li>Price: <%=ttrips2[j].price %> euros</li>
+
+<%while (k<tpackets.length){%>
+<%if(tpackets[k].pack==="Offer11" || tpackets[k].pack==="Offer12"){%>
+<li>Offer: Persons: <%=tpackets[k].person%> - Price: <%=tpackets[k].price%> euros</li><% break;%>
+<%}%>
+<%}%>
+<%k++;%>
+<br>										
+<%}%>
+<%}%>
+<%if (i==3){%>
+<%for(var j=0;j<ttrips3.length;j++){%>										
+<li>Codetrip: <%=ttrips3[j].code %></li>
+<li>Start point: <%=ttrips3[j].start %></li>
+<li>Destination: <%=ttrips3[j].dest %></li>
+<li>Hours: <%=ttrips3[j].hours %></li>
+<li>Price: <%=ttrips3[j].price %> euros</li>
+
+<%while (k<tpackets.length){%>
+<%if(tpackets[k].pack==="Offer19" || tpackets[k].pack==="Offer20"){%>
+<li>Offer: Persons: <%=tpackets[k].person%> - Price: <%=tpackets[k].price%> euros</li><% break;%>
+<%}%>
+<%}%>
+<%k++;%>
+<br>
+<%}%>
+<%}%>
+<%if (i==4){%>
+<%for(var j=0;j<ttrips4.length;j++){%>										
+<li>Codetrip: <%=ttrips4[j].code %></li>
+<li>Start point: <%=ttrips4[j].start %></li>
+<li>Destination: <%=ttrips4[j].dest %></li>
+<li>Hours: <%=ttrips4[j].hours %></li>
+<li>Price: <%=ttrips4[j].price %> euros</li>
+
+<%while (k<tpackets.length){%>
+<%if(tpackets[k].pack==="Offer17" || tpackets[k].pack==="Offer18"){%>
+<li>Offer: Persons: <%=tpackets[k].person%> - Price: <%=tpackets[k].price%> euros</li><% break;%>
+<%}%>
+<%}%>
+<%k++;%>
+<br>										
+<%}%>
+<%}%>
+</ul>
+</li>
+<li class="dropdown-submenu">
+<a class="test" href="#">Cooperates<span class="caret"></span></a>
+<ul class="dropdown-menu">
+<%if(i==0){%>
+<li>Hotels: <%=tcoopers[i].name%></li>
+<li>Rents: <%=tcoopers1[i].name%></li>
+<%}%>
+<%if(i==1){%>
+<li>Hotels: <%=tcoopers[i].name%></li>
+<li>Rents: <%=tcoopers1[i].name%></li>
+<%}%>
+<%if(i==2){%>
+<li>Hotels: <%=tcoopers[i].name%></li>
+<li>Rents: <%=tcoopers1[i].name%></li>
+<%}%>
+<%if(i==3){%>
+<li>Hotels: <%=tcoopers[i].name%></li>
+<li>Rents: <%=tcoopers1[i].name%></li>
+<%}%>
+<%if(i==4){%>
+<li>Hotels: <%=tcoopers[i].name%></li>
+<li>Rents: <%=tcoopers1[i].name%></li>
+<%}%>
+</ul>
+</li>
+</ul>
+</li>
+<%}%>
+</ul>
+</li>
+<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Sights <span class="caret"></span></a>
+<ul class="dropdown-menu">
+<% tsights.forEach(function(sight){%>
+<li class="dropdown-submenu">
+<a class="test" tabindex="-1" href="#"><%=sight.name%> <span class="caret"></span></a>
+<ul class="dropdown-menu">
+<li><a tabindex="-1">Address: <%=sight.sightaddr%></a></li>
+</ul>
+</li>					
+<% }) %>
+</ul>
+</li>
+<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Car Rental <span class="caret"></span></a>
+<ul class="dropdown-menu">
+<% for(var i =0;i<trents.length;i++){%>
+<li class = "dropdown-submenu">
+<a class="test" tabindex="-1" href="#"><%= trents[i].name%><span class="caret"></span></a>
+<ul class="dropdown-menu">
+<li><a tabindex="-1">Address: <%=trents[i].rentaddr%></a></li>
+<li><a tabindex="-1">Telephone: <%=trents[i].tel%></a></li>
+<li class="dropdown-submenu">
+<a class="test" href="#">Cars <span class="caret"></span></a>
+<ul class="dropdown-menu"  id="list">
+
+<%if(i==0){%>
+<%for(var j=0;j<tcars.length;j++){%>
+<li><%=tcars[j].number%></li>
+<li>Category: <%=tcars[j].category%></li>
+<li>Cubic: <%=tcars[j].cubic%></li>
+<li>Seats: <%=tcars[j].seats%></li>
+<li>Cost/day: <%=tcars[j].costday%> euros</li>
+<br>
+<%}%>
+
+<%}%>
+<%if(i==1){%>
+<%for(var j=0;j<tcars1.length;j++){%>
+<li><%=tcars1[j].number%></li>
+<li>Category: <%=tcars1[j].category%></li>
+<li>Cubic: <%=tcars1[j].cubic%></li>
+<li>Seats: <%=tcars1[j].seats%></li>
+<li>Cost/day: <%=tcars1[j].costday%> euros</li>
+<br>
+<%}%>
+
+<%}%>
+<%if(i==2){%>
+<%for(var j=0;j<tcars2.length;j++){%>
+<li><%=tcars2[j].number%></li>
+<li>Category: <%=tcars2[j].category%></li>
+<li>Cubic: <%=tcars2[j].cubic%></li>
+<li>Seats: <%=tcars2[j].seats%></li>
+<li>Cost/day: <%=tcars2[j].costday%> euros</li>
+<br>
+<%}%>
+
+<%}%>
+<%if(i==3){%>
+<%for(var j=0;j<tcars3.length;j++){%>
+<li><%=tcars3[j].number%></li>
+<li>Category: <%=tcars3[j].category%></li>
+<li>Cubic: <%=tcars3[j].cubic%></li>
+<li>Seats: <%=tcars3[j].seats%></li>
+<li>Cost/day: <%=tcars3[j].costday%> euros</li>
+<br>
+<%}%>
+
+<%}%>
+<%if(i==4){%>
+<%for(var j=0;j<tcars4.length;j++){%>
+<li><%=tcars4[j].number%></li>
+<li>Category: <%=tcars4[j].category%></li>
+<li>Cubic: <%=tcars4[j].cubic%></li>
+<li>Seats: <%=tcars4[j].seats%></li>
+<li>Cost/day: <%=tcars4[j].costday%> euros</li>
+<br>
+<%}%>
+
+<%}%>
+<%if(i==5){%>
+<%for(var j=0;j<tcars5.length;j++){%>
+<li><%=tcars5[j].number%></li>
+<li>Category: <%=tcars5[j].category%></li>
+<li>Cubic: <%=tcars5[j].cubic%></li>
+<li>Seats: <%=tcars5[j].seats%></li>
+<li>Cost/day: <%=tcars5[j].costday%> euros</li>
+<br>
+<%}%>
+
+<%}%>
+<%if(i==6){%>
+<%for(var j=0;j<tcars6.length;j++){%>
+<li><%=tcars6[j].number%></li>
+<li>Category: <%=tcars6[j].category%></li>
+<li>Cubic: <%=tcars6[j].cubic%></li>
+<li>Seats: <%=tcars6[j].seats%></li>
+<li>Cost/day: <%=tcars6[j].costday%> euros</li>
+<br>
+<%}%>
+
+<%}%>
+<%if(i==7){%>
+<%for(var j=0;j<tcars7.length;j++){%>
+<li><%=tcars7[j].number%></li>
+<li>Category: <%=tcars7[j].category%></li>
+<li>Cubic: <%=tcars7[j].cubic%></li>
+<li>Seats: <%=tcars7[j].seats%></li>
+<li>Cost/day: <%=tcars7[j].costday%> euros</li>
+<br>
+<%}%>
+
+<%}%>
+<%if(i==8){%>
+<%for(var j=0;j<tcars8.length;j++){%>
+<li><%=tcars8[j].number%></li>
+<li>Category: <%=tcars8[j].category%></li>
+<li>Cubic: <%=tcars8[j].cubic%></li>
+<li>Seats: <%=tcars8[j].seats%></li>
+<li>Cost/day: <%=tcars8[j].costday%> euros</li>
+<br>
+<%}%>
+
+<%}%>
+<%if(i==9){%>
+<%for(var j=0;j<tcars9.length;j++){%>
+<li><%=tcars9[j].number%></li>
+<li>Category: <%=tcars9[j].category%></li>
+<li>Cubic: <%=tcars9[j].cubic%></li>
+<li>Seats: <%=tcars9[j].seats%></li>
+<li>Cost/day: <%=tcars9[j].costday%> euros</li>
+<br>
+<%}%>
+
+<%}%>
+
+
+</ul>
+</li>
+<li class="dropdown-submenu">
+<a class="test" href="#">Moto <span class="caret"></span></a>
+<ul class="dropdown-menu"  id="list">
+<%if(i==0){%>
+<%for(var j=0;j<tmotor.length;j++){%>
+<li><%=tmotor[j].number%></li>
+<li>Category: <%=tmotor[j].category%></li>
+<li>Cubic: <%=tmotor[j].cubic%></li>
+<li>Cost/day: <%=tmotor[j].costday%> euros</li>
+<br>
+<%}%>
+
+<%}%>
+<%if(i==1){%>
+<%for(var j=0;j<tmotor1.length;j++){%>
+<li><%=tmotor1[j].number%></li>
+<li>Category: <%=tmotor1[j].category%></li>
+<li>Cubic: <%=tmotor1[j].cubic%></li>
+<li>Cost/day: <%=tmotor1[j].costday%> euros</li>
+<br>
+<%}%>
+
+<%}%>
+<%if(i==2){%>
+<%for(var j=0;j<tmotor2.length;j++){%>
+<li><%=tmotor2[j].number%></li>
+<li>Category: <%=tmotor2[j].category%></li>
+<li>Cubic: <%=tmotor2[j].cubic%></li>
+<li>Cost/day: <%=tmotor2[j].costday%> euros</li>
+<br>
+<%}%>
+
+<%}%>
+<%if(i==3){%>
+<%for(var j=0;j<tmotor3.length;j++){%>
+<li><%=tmotor3[j].number%></li>
+<li>Category: <%=tmotor3[j].category%></li>
+<li>Cubic: <%=tmotor3[j].cubic%></li>
+<li>Cost/day: <%=tmotor3[j].costday%> euros</li>
+<br>
+<%}%>
+
+<%}%>
+<%if(i==4){%>
+<%for(var j=0;j<tmotor4.length;j++){%>
+<li><%=tmotor4[j].number%></li>
+<li>Category: <%=tmotor4[j].category%></li>
+<li>Cubic: <%=tmotor4[j].cubic%></li>
+<li>Cost/day: <%=tmotor4[j].costday%> euros</li>
+<br>
+<%}%>
+
+<%}%>
+<%if(i==5){%>
+<%for(var j=0;j<tmotor5.length;j++){%>
+<li><%=tmotor5[j].number%></li>
+<li>Category: <%=tmotor5[j].category%></li>
+<li>Cubic: <%=tmotor5[j].cubic%></li>
+<li>Cost/day: <%=tmotor5[j].costday%> euros</li>
+<br>
+<%}%>
+
+<%}%>
+<%if(i==6){%>
+<%for(var j=0;j<tmotor6.length;j++){%>
+<li><%=tmotor6[j].number%></li>
+<li>Category: <%=tmotor6[j].category%></li>
+<li>Cubic: <%=tmotor6[j].cubic%></li>
+<li>Cost/day: <%=tmotor6[j].costday%> euros</li>
+<br>
+<%}%>
+
+<%}%>
+<%if(i==7){%>
+<%for(var j=0;j<tmotor7.length;j++){%>
+<li><%=tmotor7[j].number%></li>
+<li>Category: <%=tmotor7[j].category%></li>
+<li>Cubic: <%=tmotor7[j].cubic%></li>
+<li>Cost/day: <%=tmotor7[j].costday%> euros</li>
+<br>
+<%}%>
+
+<%}%>
+<%if(i==8){%>
+<%for(var j=0;j<tmotor8.length;j++){%>
+<li><%=tmotor8[j].number%></li>
+<li>Category: <%=tmotor8[j].category%></li>
+<li>Cubic: <%=tmotor8[j].cubic%></li>
+<li>Cost/day: <%=tmotor8[j].costday%> euros</li>
+<br>
+<%}%>
+
+<%}%>
+<%if(i==9){%>
+<%for(var j=0;j<tmotor9.length;j++){%>
+<li><%=tmotor9[j].number%></li>
+<li>Category: <%=tmotor9[j].category%></li>
+<li>Cubic: <%=tmotor9[j].cubic%></li>
+<li>Cost/day: <%=tmotor9[j].costday%> euros</li>
+<br>
+<%}%>
+
+<%}%>
+</ul>
+</li>
+</ul>
+</li>
+<% } %>
+</ul>
+</li>
+<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Museums <span class="caret"></span></a>
+<ul class="dropdown-menu">
+<% tmuseums.forEach(function(museum){%>
+<li class="dropdown-submenu">
+<a class="test" tabindex="-1" href="#"><%=museum.name%> <span class="caret"></span></a>
+<ul class="dropdown-menu">
+<li><a tabindex="-1">Address: <%=museum.musaddr%></a></li>
+<li><a tabindex="-1">Price: <%=museum.price%> euros</a></li>
+</ul>
+</li>
+<% }) %>
+</ul>    
+</li>
+<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Hotels <span class="caret"></span></a>
+<ul class="dropdown-menu" >
+<% thotels.forEach(function(hotel){%>
+<li class="dropdown-submenu">
+<a class="test" tabindex="-1" href="#myInput"><%=hotel.name%> <span class="caret"></span></a>
+<ul class="dropdown-menu">
+<li><a tabindex="-1"><%=hotel.category%>stars</a></li>
+<li><a tabindex="-1">Has:<%=hotel.roomscat%></a></li>
+<li><a tabindex="-1">Address:<%=hotel.roomsaddr%></a></li>
+<li><a tabindex="-1">Phone number:<%=hotel.tel%></a></li>
+<li><a tabindex="-1">Rooms number:<%=hotel.num%></a></li>
+</ul>
+</li>
+<% }) %>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<script>
+var items = document.querySelectorAll("#list li");
+
+for(var i=0;i<items.length;i++){
+items[i].onclick = function(){
+document.getElementById("myInput1").value = this.innerHTML;
+};
+}
+</script>
+<script>
+$(document).ready(function(){
+$('.dropdown-submenu a.test').on("click", function(e){
+$(this).next('ul').toggle();
+e.stopPropagation();
+e.preventDefault();
+});
+});
+</script>
+<div class="container-fluid text-center" style = "color:white">    
+
+<div> 
+<h1>Welcome</h1>
+<p>In antiquity, Thesprotia was inhabited by the ancient Greek tribe of Thesprotians and was bordered by the neighboring regions of Molossia to the north and Chaonia to the east. Thesprotia became part of the Epirote League before it was annexed by Rome where it became part of the Roman province of Epirus. After the fragmentation of the Roman Empire into East and West, Thesprotia, along with the rest of the region, became part of the Eastern Roman (Byzantine) Empire, until its fall to the Ottomans. The territory of Thesprotia remained under Ottoman rule until 1913, when it was annnexed by the Greek state after the First Balkan War. Until 1937, when the separate prefecture of Thesprotia was established, the area was part of the Ioannina Prefecture.</p>
+
+</div>
+</div>
+<div class="dropdown">
+<button class="dropbtn">Book Hotel</button>
+<div class="dropdown-content" style="left:0;">
+<div id="booking" class="container" style = "color:white">
+<h1>	Book Hotel!</h1>
+<div class="section-center">
+<div class="container">
+<div class="row">
+<div class="col-md-7 col-md-push-5">
+<div class="booking-cta">
+
+</div>
+</div>
+<div class="col-md-4 col-md-pull-7">
+<div class="booking-form">
+<form  autocomplete="off"  method="POST" action="/Reservations/add">
+<div class="form-group">
+<span class="form-label">First Name</span>
+<input class="form-control" type="text" placeholder="Enter your first name" required name="fname">
+</div>
+<div class="form-group">
+<span class="form-label">Last Name</span>
+<input class="form-control" type="text" placeholder="Enter your Last name" required name="lname">
+</div>
+<div class="form-group">
+<span class="form-label">E-mail</span>
+<input class="form-control" type="text" placeholder="Enter your e-mail" required name="mail">
+</div>
+<div class="form-group">
+<span class="form-label">Phone</span>
+<input class="form-control" type="text" placeholder="Enter your phone number" required name="phone">
+</div>
+<div class="autocomplete">
+<span class="form-label">Hotel Name</span>
+<input class="form-control" id="myInput" type="text" placeholder="Enter a hotel name" required name="hotname">
+</div>		
+<div class="form-group">
+<span class="form-label">Room Type</span>
+<input class="form-control" type="text" placeholder="Enter a room type" required name="htype">
+</div>
+<div class="row no-margin">
+<div class="col-sm-4">
+<span class="form-label">Room number</span>
+<select class="form-control" required name="rnum">
+<option>1</option>
+<option>2</option>
+<option>3</option>
+</select>
+<span class="select-arrow"></span>
+</div>
+</div>
+<div class="row no-margin">
+<div class="col-sm-9">
+<div class="form-group">
+<span class="form-label">Check In</span>
+<input class="form-control" type="date" required name="chkin">
+</div>
+</div>
+<div class="col-sm-9">
+<div class="form-group">
+<span class="form-label">Check out</span>
+<input class="form-control" type="date" required name="chkout">
+</div>
+</div>
+<div class="col-sm-4">
+<div class="form-group">
+<span class="form-label">Guests</span>
+<select class="form-control" required name="gnum">
+<option>1</option>
+<option>2</option>
+<option>3</option>
+</select>
+<span class="select-arrow"></span>
+</div>
+</div>
+</div>
+<div class="form-btn">
+<button class="button5" onclick="alert('You reservation has been succesfuly! You will be notified of the cost via e-mail')">Submit</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="dropdown">
+<button class="dropbtn">Cancel Reservation</button>
+<div class="dropdown-content" style="left:0;">
+<div id="booking1" class="container" style = "color:white">
+<h1>	Cancel Reservation</h1>
+<div class="section-center">
+<div class="container">
+<div class="row">
+<div class="col-md-7 col-md-push-5">
+<div class="booking-cta">
+
+</div>
+</div>
+<div class="col-md-4 col-md-pull-7">
+<div class="booking-form">
+<form name="myForm1"  method="POST" action="/Reservations/remove">
+<div class="form-group">
+<span class="form-label">First Name</span>
+<input class="form-control" type="text" placeholder="Enter your first name" required name="fname1">
+</div>
+<div class="form-group">
+<span class="form-label">Last Name</span>
+<input class="form-control" type="text" placeholder="Enter your Last name" required name="lname1">
+</div>
+<div class="form-group">
+<span class="form-label">Reservation number</span>
+<input class="form-control" type="text" placeholder="Enter your reservation number" required name="resnum1">
+</div>
+<div class="form-btn">
+<button class="button5" onclick="alert('You cancel your Reservation')">Cancell</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="dropdown">
+<button class="dropbtn">Car or Moto Hire</button>
+<div class="dropdown-content" style="left:0;">				
+<div id="booking2" class="container" style = "color:white">
+<h1>	Car or Moto Hire</h1>
+<div class="section-center">
+<div class="container">
+<div class="row">
+<div class="col-md-7 col-md-push-5">
+<div class="booking-cta">
+
+</div>
+</div>
+<div class="col-md-4 col-md-pull-7">
+<div class="booking-form">
+<form name="myForm2"  method="POST" action="/Carres/add">
+<div class="form-group">
+<span class="form-label">First Name</span>
+<input class="form-control" type="text" placeholder="Enter your first name" required name="fname2">
+</div>
+<div class="form-group">
+<span class="form-label">Last Name</span>
+<input class="form-control" type="text" placeholder="Enter your Last name" required name="lname2">
+</div>
+<div class="form-group">
+<span class="form-label">E-mail</span>
+<input class="form-control" type="text" placeholder="Enter your e-mail" required name="mail1">
+</div>
+<div class="form-group">
+<span class="form-label">Company Rent</span>
+<input class="form-control" type="text" placeholder="Enter Company name" required name="cmpname">
+</div>
+<div class="row no-margin">
+<div class="col-sm-8">
+<div class="form-group">
+<span class="form-label">Select</span>
+<select class="form-control" required name="cmchoose">
+<option>Car</option>
+<option>Moto</option>
+</select>
+<span class="select-arrow"></span>
+</div>
+</div>
+</div>
+<div class="form-group">
+<span class="form-label">Vehicle number</span>
+<input class="form-control" id="myInput1" type="text" placeholder="Write Vehicle's number.." required name="vehnum">
+</div>
+<div class="row no-margin">
+<div class="col-sm-9">
+<div class="form-group">
+<span class="form-label"> Day In</span>
+<input class="form-control" type="date" required name="din">
+</div>
+</div>
+<div class="col-sm-9">
+<div class="form-group">
+<span class="form-label">Day out</span>
+<input class="form-control" type="date" required name="dout">
+</div>
+</div>
+</div>
+<div class="form-btn">
+<button class="button5" onclick="alert('You book your car! You will be notified of the cost via e-mail')">Book</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>	
+</div>
+<div class="dropdown">
+<button class="dropbtn">Cancel Rent Reservation</button>
+<div class="dropdown-content" style="left:0;">
+<div id="booking3" class="container" style = "color:white">
+<h1>	Cancel Rent Reservation</h1>
+<div class="section-center">
+<div class="container">
+<div class="row">
+<div class="col-md-7 col-md-push-5">
+<div class="booking-cta">
+
+</div>
+</div>
+<div class="col-md-4 col-md-pull-7">
+<div class="booking-form">
+<form name="myForm2"  method="POST" action="/Carres/remove">
+<div class="form-group">
+<span class="form-label">First Name</span>
+<input class="form-control" type="text" placeholder="Enter your first name" required name="fname3">
+</div>
+<div class="form-group">
+<span class="form-label">Last Name</span>
+<input class="form-control" type="text" placeholder="Enter your Last name" required name="lname3">
+</div>
+<div class="form-group">
+<span class="form-label">Reservation number</span>
+<input class="form-control" type="text" placeholder="Write Reservation number.." required name="resnum2">
+</div>
+<div class="form-btn">
+<button class="button5"onclick="alert('You Cancel your booking!')">Cancell</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+function autocomplete(inp, arr) {
+
+var currentFocus;
+
+inp.addEventListener("input", function(e) {
+var a, b, i, val = this.value;
+
+closeAllLists();
+if (!val) { return false;}
+currentFocus = -1;
+
+a = document.createElement("DIV");
+a.setAttribute("id", this.id + "autocomplete-list");
+a.setAttribute("class", "autocomplete-items");
+
+this.parentNode.appendChild(a);
+
+for (i = 0; i < arr.length; i++) {
+
+if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+
+b = document.createElement("DIV");
+
+b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+b.innerHTML += arr[i].substr(val.length);
+
+b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+
+b.addEventListener("click", function(e) {
+
+inp.value = this.getElementsByTagName("input")[0].value;
+
+closeAllLists();
+});
+a.appendChild(b);
+}
+}
+});
+
+inp.addEventListener("keydown", function(e) {
+var x = document.getElementById(this.id + "autocomplete-list");
+if (x) x = x.getElementsByTagName("div");
+if (e.keyCode == 40) {
+
+currentFocus++;
+
+addActive(x);
+} else if (e.keyCode == 38) { 
+currentFocus--;
+
+addActive(x);
+} else if (e.keyCode == 13) {
+
+e.preventDefault();
+if (currentFocus > -1) {
+
+if (x) x[currentFocus].click();
+}
+}
+});
+function addActive(x) {
+
+if (!x) return false;
+
+removeActive(x);
+if (currentFocus >= x.length) currentFocus = 0;
+if (currentFocus < 0) currentFocus = (x.length - 1);
+
+x[currentFocus].classList.add("autocomplete-active");
+}
+function removeActive(x) {
+
+for (var i = 0; i < x.length; i++) {
+x[i].classList.remove("autocomplete-active");
+}
+}
+function closeAllLists(elmnt) {
+
+var x = document.getElementsByClassName("autocomplete-items");
+for (var i = 0; i < x.length; i++) {
+if (elmnt != x[i] && elmnt != inp) {
+x[i].parentNode.removeChild(x[i]);
+}
+}
+}
+
+document.addEventListener("click", function (e) {
+closeAllLists(e.target);
+});
+}
+
+
+var countries = [ "All Saints Villas","Albatros Hotel","Oriana Boutique Hotel","Riviera Perdika Hotel","Casa Matina","Kourtis Apartments","Angelika Pallas","Kleopatra Hotel","Hotel Iliana","Hotel Sivota","Astoria","Niriides","Bella Vraka","Domotel Agios Nikolaos Resort","The View Hotel","Oikies Complex","Sivota Diamond Spa Resort","Selefkos Palace","Coralli Hotel","Agathi Apartments","Edem Studios","Hotel Eirini","Liodentro-Olea","Aqua Olivia Resort","Elenas Apartment","Casa Sivota","Villa Rania","Costa Smeralda","Villa Vera","Sofia Apartments","Velanidia Apartments","Domotel Agios Nikolaos Suites Resort","Chrisanthi Apartments","Lns Vip Villas","Aelia Hotel","Almini Apartments","Perdika Resort","Ionion Hotel","Acherontas","Theasis Hotel","Villa Rosana","Villa Marie","Anneta Studios","Glykis Ear","Hotel Filakas","Virvilis Apartments","Sivota Gold Hotel","Sunny Garden","Mons & Mare Villas","Bellou Villas","Fegaropetra Studios","Villa Victoria","Afroditi Studios","Hotel Agia Paraskevi","Acheron Spring-Markou Ilias","Muses","AnGeo Luxury Apartments","Villa Manos","4Seasons Villas","Stavrodromi Hotel","Marieli Studios","Petra & Thalassa luxury Villas","Villas Gregory","Hara Studios","Paschos Rooms","Parthenia Apartments","Athansiou Rooms","Hotel Mega Ammos","Piges Acheronta","Panorama Botsaris","The Village","Chrisovalanto Hotel","Amazing View Apartment","Eleatis","Kika Apartments","Rozalia Studios","Revis Station","El Greco","Sivota Seascape","Prima Vista Boutique Hotel","Jolly Hotel","Aktaion Hotel","Arilla Beach Hotel","Hotel Elina","Oscar Hotel","Karvouno Villas","Casa Evanti","Villa Milena","Blue Bay Apartments","Margarita Rooms","Perdika Ionion Villas","Hotel Elena","Aegean Island Hotel","Ornela Beach Resort & Villas","Baia Blu Lodging","Villa Niki","3 Aktes Resort","Virginia romms","Fissas Rooms"]; 
+
+
+autocomplete(document.getElementById("myInput"), countries);
+</script>			
+
+</body>
+</html>

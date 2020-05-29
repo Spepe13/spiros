@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Preveza</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <style>
+    /* Remove the navbar's default margin-bottom and rounded borders */ 
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+    
+    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+    .row.content {height: 450px}
+    
+    /* Set gray background color and 100% height */
+    .sidenav {
+      padding-top: 20px;
+      background-color: #f1f1f1;
+      height: 100%;
+    }
+    
+    /* Set black background color, white text and some padding */
+    footer {
+      background-color: #555;
+      color: white;
+      padding: 15px;
+    }
+    
+    /* On small screens, set height to 'auto' for sidenav and grid */
+    @media screen and (max-width: 767px) {
+      .sidenav {
+        height: auto;
+        padding: 15px;
+      }
+      .row.content {height:auto;} 
+    }
+	body {
+   background-image: url("http://discovergreece.ru/wp-content/uploads/2016/08/Preveza.jpg");
+   background-color: #cccccc;
+}
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu .dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -1px;
+}
+
+.button5 {background-color: #555555;} /* Black */
+
+.autocomplete {
+  /*the container must be positioned relative:*/
+  position: relative;
+  display: inline-block;
+}
+
+input {
+  border: 1px solid transparent;
+  background-color: #f1f1f1;
+  padding: 10px;
+  font-size: 16px;
+}
+
+input[type=text] {
+  background-color: #f1f1f1;
+  width: 100%;
+}
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 0;
+  right: 0;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #000; 
+  border-bottom: 1px solid #d4d4d4; 
+}
+
+.autocomplete-items div:hover {
+  /*when hovering an item:*/
+  background-color: #000000; 
+}
+
+.autocomplete-active {
+  /*when navigating through the items using the arrow keys:*/
+  background-color: DodgerBlue !important; 
+  color: #ffffff; 
+}
+.dropbtn {
+    background-color: #000000;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1;}
+.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropbtn {background-color: #000000;}
+  </style>
+
+</head>
+<body>
+
+
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+  <ul class="nav navbar-nav">
+        <li class="active"><a href="/">Home</a></li>
+		  <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Routes <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+				<% routes.forEach(function(route){%>
+					<li><a>From: <%= route.from%></a></li>
+					<li><a>To: <%= route.to%></a></li>
+					<li><a>Company: <%= route.company%></a></li>
+					<li><a>Days: <%= route.day%></a></li>
+					<li><a>Hours: <%= route.hours%></a></li>
+					<li><a>Kind: <%= route.kind%></a></li>
+					<li><a>Price Ticket: <%= route.price%> euros</a></li><br><br>
+					<%})%>
+					
+            </ul>
+         </li>
+        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Travel Agencies <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+				<%for(var i=0;i<travels.length;i++){%>
+					<li class = "dropdown-submenu">
+					<a class="test" tabindex="-1" href="#"><%= travels[i].name%><span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a tabindex="-1">Address: <%=travels[i].travaddr%></a></li>
+						<li><a tabindex="-1">Telephone: <%=travels[i].tel%></a></li>
+						<li class="dropdown-submenu">
+							<a class="test" href="#">Trips<span class="caret"></span></a>
+						  <ul class="dropdown-menu">
+							
+								<%if (i==0){%>
+									<%var k =0;%>
+									<%for(var j=0;j<trips.length;j++){%>
+										<li>Codetrip: <%=trips[j].code%></li>
+										<li>Start point: <%=trips[j].start%></li>
+										<li>Destination: <%=trips[j].dest%></li>
+										<li>Hours: <%=trips[j].hours%></li>
+										<li>Price: <%=trips[j].price%> euros</li>
+										<%while (k<packets.length){%>
+                                            <%if(packets[k].pack==="Offer25" || packets[k].pack==="Offer26"){%>
+                                                    <li>Offer: Persons: <%=packets[k].person%> - Price: <%=packets[k].price%> euros</li><% break;%>
+                                                <%}%>
+                                             <%}%>
+                                             <%k++;%>
+										
+										<br>
+									<%}%>
+								<%}%>
+								<%if (i==1){%>
+									<%for(var j=0;j<trips1.length;j++){%>
+											<li>Codetrip: <%=trips1[j].code %></li>
+											<li>Start point: <%=trips1[j].start %></li>
+											<li>Destination: <%=trips1[j].dest %></li>
+											<li>Hours: <%=trips1[j].hours %></li>
+											<li>Price: <%=trips1[j].price %> euros</li>
+                                            <%while (k<packets.length){%>
+                                                <%if(packets[k].pack==="Offer23" || packets[k].pack==="Offer24"){%>
+                                                        <li>Offer: Persons: <%=packets[k].person%> - Price: <%=packets[k].price%> euros</li><% break;%>
+                                                    <%}%>
+                                                 <%}%>
+                                                 <%k++;%>
+											
+											<br>
+									<%}%>
+								<%}%>
+								<%if (i==2){%>
+									<%for(var j=0;j<trips2.length;j++){%>										
+											<li>Codetrip: <%=trips2[j].code %></li>
+											<li>Start point: <%=trips2[j].start %></li>
+											<li>Destination: <%=trips2[j].dest %></li>
+											<li>Hours: <%=trips2[j].hours %></li>
+											<li>Price: <%=trips2[j].price %> euros</li>
+                                            <%while (k<packets.length){%>
+                                                <%if(packets[k].pack==="Offer21" || packets[k].pack==="Offer22"){%>
+                                                        <li>Offer: Persons: <%=packets[k].person%> - Price: <%=packets[k].price%> euros</li><% break;%>
+                                                    <%}%>
+                                                 <%}%>
+                                                 <%k++;%>
+											
+											<br>										
+									<%}%>
+								<%}%>
+								<%if (i==3){%>
+									<%for(var j=0;j<trips3.length;j++){%>										
+											<li>Codetrip: <%=trips3[j].code %></li>
+											<li>Start point: <%=trips3[j].start %></li>
+											<li>Destination: <%=trips3[j].dest %></li>
+											<li>Hours: <%=trips3[j].hours %></li>
+											<li>Price: <%=trips3[j].price %> euros</li>
+                                            <%while (k<packets.length){%>
+                                                <%if(packets[k].pack==="Offer29" || packets[k].pack==="Offer30"){%>
+                                                        <li>Offer: Persons: <%=packets[k].person%> - Price: <%=packets[k].price%> euros</li><% break;%>
+                                                    <%}%>
+                                                 <%}%>
+                                                 <%k++;%>
+											
+											<br>
+									<%}%>
+								<%}%>
+								<%if (i==4){%>
+									<%for(var j=0;j<trips4.length;j++){%>										
+											<li>Codetrip: <%=trips4[j].code %></li>
+											<li>Start point: <%=trips4[j].start %></li>
+											<li>Destination: <%=trips4[j].dest %></li>
+											<li>Hours: <%=trips4[j].hours %></li>
+											<li>Price: <%=trips4[j].price %> euros</li>
+                                            <%while (k<packets.length){%>
+                                                <%if(packets[k].pack==="Offer27" || packets[k].pack==="Offer28"){%>
+                                                        <li>Offer: Persons: <%=packets[k].person%> - Price: <%=packets[k].price%> euros</li><% break;%>
+                                                    <%}%>
+                                                 <%}%>
+                                                 <%k++;%>
+											
+											<br>										
+									<%}%>
+								<%}%>
+							</ul>
+						</li>
+						<li class="dropdown-submenu">
+							<a class="test" href="#">Cooperates<span class="caret"></span></a>
+						  <ul class="dropdown-menu">
+						  	<%if(i==0){%>
+						  		<li>Hotels: <%=coopers[i].name%></li>
+						  		<li>Rents: <%=coopers1[i].name%></li>
+						  	<%}%>
+						  	<%if(i==1){%>
+						  		<li>Hotels: <%=coopers[i].name%></li>
+						  		<li>Rents: <%=coopers1[i].name%></li>
+						  	<%}%>
+						  	<%if(i==2){%>
+						  		<li>Hotels: <%=coopers[i].name%></li>
+						  		<li>Rents: <%=coopers1[i].name%></li>
+						  	<%}%>
+						  	<%if(i==3){%>
+						  		<li>Hotels: <%=coopers[i].name%></li>
+						  		<li>Rents: <%=coopers1[i].name%></li>
+						  	<%}%>
+						  	<%if(i==4){%>
+						  		<li>Hotels: <%=coopers[i].name%></li>
+						  		<li>Rents: <%=coopers1[i].name%></li>
+						  	<%}%>
+						  </ul>
+						</li>
+					</ul>
+				</li>
+				<%}%>
+            </ul>
+         </li>
+		 
+		<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Sights <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+				<% sights.forEach(function(sight){%>
+					<li class="dropdown-submenu">
+						<a class="test" tabindex="-1" href="#"><%=sight.name%> <span class="caret"></span></a>
+					   <ul class="dropdown-menu">
+						  <li><a tabindex="-1">Address: <%=sight.sightaddr%></a></li>
+					   </ul>
+					 </li>					
+				<% }) %>
+            </ul>
+         </li>
+<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Car Rental <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+				<% for(var i =0;i<rents.length;i++){%>
+					<li class = "dropdown-submenu">
+					<a class="test" tabindex="-1" href="#"><%= rents[i].name%><span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a tabindex="-1">Address: <%=rents[i].rentaddr%></a></li>
+						<li><a tabindex="-1">Telephone: <%=rents[i].tel%></a></li>
+						<li class="dropdown-submenu">
+							<a class="test" href="#">Cars <span class="caret"></span></a>
+						  <ul class="dropdown-menu"  id="list" >
+							
+								<%if(i==0){%>
+									<%for(var j=0;j<cars.length;j++){%>
+									<li><%=cars[j].number%></li>
+									<li>Category: <%=cars[j].category%></li>
+									<li>Cubic: <%=cars[j].cubic%></li>
+									<li>Seats: <%=cars[j].seats%></li>
+									<li>Cost/day: <%=cars[j].costday%> euros</li>
+									<br>
+									<%}%>
+									
+								<%}%>
+								<%if(i==1){%>
+									<%for(var j=0;j<cars1.length;j++){%>
+									<li><%=cars1[j].number%></li>
+									<li>Category: <%=cars1[j].category%></li>
+									<li>Cubic: <%=cars1[j].cubic%></li>
+									<li>Seats: <%=cars1[j].seats%></li>
+									<li>Cost/day: <%=cars1[j].costday%> euros</li>
+									<br>
+									<%}%>
+									
+								<%}%>
+								<%if(i==2){%>
+									<%for(var j=0;j<cars2.length;j++){%>
+									<li><%=cars2[j].number%></li>
+									<li>Category: <%=cars2[j].category%></li>
+									<li>Cubic: <%=cars2[j].cubic%></li>
+									<li>Seats: <%=cars2[j].seats%></li>
+									<li>Cost/day: <%=cars2[j].costday%> euros</li>
+									<br>
+									<%}%>
+									
+								<%}%>
+								<%if(i==3){%>
+									<%for(var j=0;j<cars3.length;j++){%>
+									<li><%=cars3[j].number%></li>
+									<li>Category: <%=cars3[j].category%></li>
+									<li>Cubic: <%=cars3[j].cubic%></li>
+									<li>Seats: <%=cars3[j].seats%></li>
+									<li>Cost/day: <%=cars3[j].costday%> euros</li>
+									<br>
+									<%}%>
+									
+								<%}%>
+								<%if(i==4){%>
+									<%for(var j=0;j<cars4.length;j++){%>
+									<li><%=cars4[j].number%></li>
+									<li>Category: <%=cars4[j].category%></li>
+									<li>Cubic: <%=cars4[j].cubic%></li>
+									<li>Seats: <%=cars4[j].seats%></li>
+									<li>Cost/day: <%=cars4[j].costday%> euros</li>
+									<br>
+									<%}%>
+									
+								<%}%>
+								
+						  </ul>
+						</li>
+						<li class="dropdown-submenu">
+							<a class="test" href="#">Moto <span class="caret"></span></a>
+						  <ul class="dropdown-menu"  id="list">
+								<%if(i==0){%>
+									<%for(var j=0;j<motor.length;j++){%>
+									<li><%=motor[j].number%></li>
+									<li>Category: <%=motor[j].category%></li>
+									<li>Cubic: <%=motor[j].cubic%></li>
+									<li>Cost/day: <%=motor[j].costday%> euros</li>
+									<br>
+									<%}%>
+									
+								<%}%>
+								<%if(i==1){%>
+									<%for(var j=0;j<motor1.length;j++){%>
+									<li><%=motor1[j].number%></li>
+									<li>Category: <%=motor1[j].category%></li>
+									<li>Cubic: <%=motor1[j].cubic%></li>
+									<li>Cost/day: <%=motor1[j].costday%> euros</li>
+									<br>
+									<%}%>
+									
+								<%}%>
+								<%if(i==2){%>
+									<%for(var j=0;j<motor2.length;j++){%>
+									<li><%=motor2[j].number%></li>
+									<li>Category: <%=motor2[j].category%></li>
+									<li>Cubic: <%=motor2[j].cubic%></li>
+									<li>Cost/day: <%=motor2[j].costday%> euros</li>
+									<br>
+									<%}%>
+									
+								<%}%>
+								<%if(i==3){%>
+									<%for(var j=0;j<motor3.length;j++){%>
+									<li><%=motor3[j].number%></li>
+									<li>Category: <%=motor3[j].category%></li>
+									<li>Cubic: <%=motor3[j].cubic%></li>
+									<li>Cost/day: <%=motor3[j].costday%> euros</li>
+									<br>
+									<%}%>
+									
+								<%}%>
+								<%if(i==4){%>
+									<%for(var j=0;j<motor4.length;j++){%>
+									<li><%=motor4[j].number%></li>
+									<li>Category: <%=motor4[j].category%></li>
+									<li>Cubic: <%=motor4[j].cubic%></li>
+									<li>Cost/day: <%=motor4[j].costday%> euros</li>
+									<br>
+									<%}%>
+									
+								<%}%>
+								
+						  </ul>
+						</li>
+					</ul>
+					</li>
+						<% } %>
+            </ul>
+</li>
+<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Museums <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+		<% museums.forEach(function(museum){%>
+     <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#"><%=museum.name%> <span class="caret"></span></a>
+       <ul class="dropdown-menu">
+          <li><a tabindex="-1">Address: <%=museum.musaddr%></a></li>
+		  <li><a tabindex="-1">Price: <%=museum.price%> euros</a></li>
+		  </ul>
+     </li>
+	<% }) %>
+   </ul>    
+ </li>
+<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Hotels <span class="caret"></span></a>
+   <ul class="dropdown-menu">
+		<% hotels.forEach(function(hotel){%>
+     <li class="dropdown-submenu">
+        <a class="test" tabindex="-1" href="#"><%=hotel.name%> <span class="caret"></span></a>
+       <ul class="dropdown-menu">
+          <li><a tabindex="-1"><%=hotel.category%>stars</a></li>
+		  <li><a tabindex="-1">Has:<%=hotel.roomscat%></a></li>
+		  <li><a tabindex="-1">Address:<%=hotel.roomsaddr%></a></li>
+		  <li><a tabindex="-1">Phone number:<%=hotel.tel%></a></li>
+		  <li><a tabindex="-1">Rooms number:<%=hotel.num%></a></li>
+		  </ul>
+     </li>
+	<% }) %>
+   </ul>
+ </li>    
+</ul>
+</div>
+  </div>
+</nav>
+<script>
+var items = document.querySelectorAll("#list li");
+
+for(var i=0;i<items.length;i++){
+	items[i].onclick = function(){
+		document.getElementById("myInput1").value = this.innerHTML;
+	};
+}
+</script>
+<script>
+$(document).ready(function(){
+  $('.dropdown-submenu a.test').on("click", function(e){
+    $(this).next('ul').toggle();
+    e.stopPropagation();
+    e.preventDefault();
+  });
+});
+</script>
+
+
+<div class="container-fluid text-center" style = "color:white">    
+  
+    <div> 
+      <h1>Welcome</h1>
+      <p>Preveza is a town in the region of Epirus, northwestern Greece, located at the mouth of the Ambracian Gulf. It is the capital of the regional unit of Preveza, which is part of the region of Epirus.</p>
+    
+  </div>
+</div>
+<div class="dropdown">
+	<button class="dropbtn">Book Hotel</button>
+	<div class="dropdown-content" style="left:0;">
+	<div id="booking" class="container" style = "color:white">
+	<h1>	Book Hotel!</h1>
+			<div class="section-center">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-7 col-md-push-5">
+							<div class="booking-cta">
+								
+							</div>
+						</div>
+						<div class="col-md-4 col-md-pull-7">
+							<div class="booking-form">
+									<form  autocomplete="off"  method="POST" action="/Reservations/add">
+									<div class="form-group">
+										<span class="form-label">First Name</span>
+										<input class="form-control" type="text" placeholder="Enter your first name" required name="fname">
+									</div>
+									<div class="form-group">
+										<span class="form-label">Last Name</span>
+										<input class="form-control" type="text" placeholder="Enter your Last name" required name="lname">
+									</div>
+									<div class="form-group">
+										<span class="form-label">E-mail</span>
+										<input class="form-control" type="text" placeholder="Enter your e-mail" required name="mail">
+									</div>
+									<div class="form-group">
+										<span class="form-label">Phone</span>
+										<input class="form-control" type="text" placeholder="Enter your phone number" required name="phone">
+									</div>
+									<div class="autocomplete">
+										<span class="form-label">Hotel Name</span>
+										<input class="form-control" id="myInput" type="text" placeholder="Enter a hotel name" required name="hotname">
+									</div>		
+									<div class="form-group">
+										<span class="form-label">Room Type</span>
+										<input class="form-control" type="text" placeholder="Enter a room type" required name="htype">
+									</div>
+									<div class="row no-margin">
+										<div class="col-sm-4">
+											<span class="form-label">Room number</span>
+											<select class="form-control" required name="rnum">
+												<option>1</option>
+												<option>2</option>
+												<option>3</option>
+											</select>
+											<span class="select-arrow"></span>
+										</div>
+									</div>
+									<div class="row no-margin">
+										<div class="col-sm-9">
+											<div class="form-group">
+												<span class="form-label">Check In</span>
+												<input class="form-control" type="date" required name="chkin">
+											</div>
+										</div>
+										<div class="col-sm-9">
+											<div class="form-group">
+												<span class="form-label">Check out</span>
+												<input class="form-control" type="date" required name="chkout">
+											</div>
+										</div>
+										<div class="col-sm-4">
+											<div class="form-group">
+												<span class="form-label">Guests</span>
+												<select class="form-control" required name="gnum">
+													<option>1</option>
+													<option>2</option>
+													<option>3</option>
+												</select>
+												<span class="select-arrow"></span>
+											</div>
+										</div>
+									</div>
+									<div class="form-btn">
+										<button class="button5" onclick="alert('You reservation has been succesfuly! You will be notified of the cost via e-mail')">Submit</button>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	</div>
+</div>
+</div>
+<div class="dropdown">
+	<button class="dropbtn">Cancel Reservation</button>
+	<div class="dropdown-content" style="left:0;">
+	<div id="booking1" class="container" style = "color:white">
+		<h1>	Cancel Reservation</h1>
+				<div class="section-center">
+					<div class="container">
+						<div class="row">
+							<div class="col-md-7 col-md-push-5">
+								<div class="booking-cta">
+									
+								</div>
+							</div>
+							<div class="col-md-4 col-md-pull-7">
+								<div class="booking-form">
+									<form name="myForm1"  method="POST" action="/Reservations/remove">
+										<div class="form-group">
+											<span class="form-label">First Name</span>
+											<input class="form-control" type="text" placeholder="Enter your first name" required name="fname1">
+										</div>
+										<div class="form-group">
+											<span class="form-label">Last Name</span>
+											<input class="form-control" type="text" placeholder="Enter your Last name" required name="lname1">
+										</div>
+										<div class="form-group">
+											<span class="form-label">Reservation number</span>
+											<input class="form-control" type="text" placeholder="Enter your reservation number" required name="resnum1">
+										</div>
+										<div class="form-btn">
+											<button class="button5" onclick="alert('You cancel your Reservation')">Cancell</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="dropdown">
+		<button class="dropbtn">Car or Moto Hire</button>
+		<div class="dropdown-content" style="left:0;">				
+			<div id="booking2" class="container" style = "color:white">
+					<h1>	Car or Moto Hire</h1>
+							<div class="section-center">
+								<div class="container">
+									<div class="row">
+										<div class="col-md-7 col-md-push-5">
+											<div class="booking-cta">
+												
+											</div>
+										</div>
+										<div class="col-md-4 col-md-pull-7">
+											<div class="booking-form">
+												<form name="myForm2"  method="POST" action="/Carres/add">
+													<div class="form-group">
+														<span class="form-label">First Name</span>
+														<input class="form-control" type="text" placeholder="Enter your first name" required name="fname2">
+													</div>
+													<div class="form-group">
+														<span class="form-label">Last Name</span>
+														<input class="form-control" type="text" placeholder="Enter your Last name" required name="lname2">
+													</div>
+													<div class="form-group">
+														<span class="form-label">E-mail</span>
+														<input class="form-control" type="text" placeholder="Enter your e-mail" required name="mail1">
+													</div>
+													<div class="form-group">
+															<span class="form-label">Company Rent</span>
+															<input class="form-control" type="text" placeholder="Enter Company name" required name="cmpname">
+														</div>
+														<div class="row no-margin">
+														<div class="col-sm-8">
+																<div class="form-group">
+																	<span class="form-label">Select</span>
+																	<select class="form-control" required name="cmchoose">
+																		<option>Car</option>
+																		<option>Moto</option>
+																	</select>
+																	<span class="select-arrow"></span>
+																</div>
+															</div>
+														</div>
+														<div class="form-group">
+																<span class="form-label">Vehicle number</span>
+																<input class="form-control" id="myInput1" type="text" placeholder="Write Vehicle's number.." required name="vehnum">
+															</div>
+															<div class="row no-margin">
+																<div class="col-sm-9">
+																	<div class="form-group">
+																		<span class="form-label"> Day In</span>
+																		<input class="form-control" type="date" required name="din">
+																	</div>
+																</div>
+																<div class="col-sm-9">
+																	<div class="form-group">
+																		<span class="form-label">Day out</span>
+																		<input class="form-control" type="date" required name="dout">
+																	</div>
+																</div>
+															</div>
+													<div class="form-btn">
+														<button class="button5" onclick="alert('You book your car! You will be notified of the cost via e-mail')">Book</button>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>	
+				</div>
+				<div class="dropdown">
+					<button class="dropbtn">Cancel Rent Reservation</button>
+					<div class="dropdown-content" style="left:0;">
+						<div id="booking3" class="container" style = "color:white">
+							<h1>	Cancel Rent Reservation</h1>
+									<div class="section-center">
+										<div class="container">
+											<div class="row">
+												<div class="col-md-7 col-md-push-5">
+													<div class="booking-cta">
+														
+													</div>
+												</div>
+												<div class="col-md-4 col-md-pull-7">
+													<div class="booking-form">
+														<form name="myForm2"  method="POST" action="/Carres/remove">
+															<div class="form-group">
+																<span class="form-label">First Name</span>
+																<input class="form-control" type="text" placeholder="Enter your first name" required name="fname3">
+															</div>
+															<div class="form-group">
+																<span class="form-label">Last Name</span>
+																<input class="form-control" type="text" placeholder="Enter your Last name" required name="lname3">
+															</div>
+															<div class="form-group">
+																<span class="form-label">Reservation number</span>
+																<input class="form-control" type="text" placeholder="Write Reservation number.." required name="resnum2">
+															</div>
+															<div class="form-btn">
+																<button class="button5"onclick="alert('You Cancel your booking!')">Cancell</button>
+															</div>
+														</form>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+			<script>
+					function autocomplete(inp, arr) {
+					  /*the autocomplete function takes two arguments,
+					  the text field element and an array of possible autocompleted values:*/
+					  var currentFocus;
+					  /*execute a function when someone writes in the text field:*/
+					  inp.addEventListener("input", function(e) {
+						  var a, b, i, val = this.value;
+						  /*close any already open lists of autocompleted values*/
+						  closeAllLists();
+						  if (!val) { return false;}
+						  currentFocus = -1;
+						  /*create a DIV element that will contain the items (values):*/
+						  a = document.createElement("DIV");
+						  a.setAttribute("id", this.id + "autocomplete-list");
+						  a.setAttribute("class", "autocomplete-items");
+						  /*append the DIV element as a child of the autocomplete container:*/
+						  this.parentNode.appendChild(a);
+						  /*for each item in the array...*/
+						  for (i = 0; i < arr.length; i++) {
+							/*check if the item starts with the same letters as the text field value:*/
+							if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+							  /*create a DIV element for each matching element:*/
+							  b = document.createElement("DIV");
+							  /*make the matching letters bold:*/
+							  b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+							  b.innerHTML += arr[i].substr(val.length);
+							  /*insert a input field that will hold the current array item's value:*/
+							  b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+							  /*execute a function when someone clicks on the item value (DIV element):*/
+							  b.addEventListener("click", function(e) {
+								  /*insert the value for the autocomplete text field:*/
+								  inp.value = this.getElementsByTagName("input")[0].value;
+								  /*close the list of autocompleted values,
+								  (or any other open lists of autocompleted values:*/
+								  closeAllLists();
+							  });
+							  a.appendChild(b);
+							}
+						  }
+					  });
+					  /*execute a function presses a key on the keyboard:*/
+					  inp.addEventListener("keydown", function(e) {
+						  var x = document.getElementById(this.id + "autocomplete-list");
+						  if (x) x = x.getElementsByTagName("div");
+						  if (e.keyCode == 40) {
+							/*If the arrow DOWN key is pressed,
+							increase the currentFocus variable:*/
+							currentFocus++;
+							/*and and make the current item more visible:*/
+							addActive(x);
+						  } else if (e.keyCode == 38) { //up
+							/*If the arrow UP key is pressed,
+							decrease the currentFocus variable:*/
+							currentFocus--;
+							/*and and make the current item more visible:*/
+							addActive(x);
+						  } else if (e.keyCode == 13) {
+							/*If the ENTER key is pressed, prevent the form from being submitted,*/
+							e.preventDefault();
+							if (currentFocus > -1) {
+							  /*and simulate a click on the "active" item:*/
+							  if (x) x[currentFocus].click();
+							}
+						  }
+					  });
+					  function addActive(x) {
+						/*a function to classify an item as "active":*/
+						if (!x) return false;
+						/*start by removing the "active" class on all items:*/
+						removeActive(x);
+						if (currentFocus >= x.length) currentFocus = 0;
+						if (currentFocus < 0) currentFocus = (x.length - 1);
+						/*add class "autocomplete-active":*/
+						x[currentFocus].classList.add("autocomplete-active");
+					  }
+					  function removeActive(x) {
+						/*a function to remove the "active" class from all autocomplete items:*/
+						for (var i = 0; i < x.length; i++) {
+						  x[i].classList.remove("autocomplete-active");
+						}
+					  }
+					  function closeAllLists(elmnt) {
+						/*close all autocomplete lists in the document,
+						except the one passed as an argument:*/
+						var x = document.getElementsByClassName("autocomplete-items");
+						for (var i = 0; i < x.length; i++) {
+						  if (elmnt != x[i] && elmnt != inp) {
+							x[i].parentNode.removeChild(x[i]);
+						  }
+						}
+					  }
+					  /*execute a function when someone clicks in the document:*/
+					  document.addEventListener("click", function (e) {
+						  closeAllLists(e.target);
+					  });
+					}
+					
+					/*An array containing all the country names in the world:*/
+					var countries = ["Hotel Agios Thwmas","Hotel Anna","Hotel Apollonio","Hotel Asteras","Preveza Beach Hotel","Niko Hotel","Hotel Achileas","Hotel Adonis","Hotel Philoxenia","Kanali Beach Hotel","Hotel Myrto","Poseidon Beach Hotel","Loukas Hotel Apartments","Hotel Filoxenia","Ionian Theoxenia Hotel","Palmina Mare Studios","Villa Sophia","Hotel Avra","Hotel Cleopatra","Dionisos Hotel","Siarbas Hotel","Hotel Anemelia","Hotel Dimitra","Hotel Dioni","Hotel Eleni","Hotel Fotini","Hotel Galini","Hotel Hasakis","Hotel Iliana","Hotel Kalamitsi","Hotel Kassopi","To Petrino","Villa Vanda","Hotel Nepheli","Hotel Mesogeios 2000","Hotel Rousto","Hotel Selini","Hotel V- Del Mare","Hotel Glaros","Hotel Golden Beach","Hotel Kastro","Hotel Katerina","Hotel Kouros","Hotel Minos","Hotel Panorama","Zikas Hotel","Konsta Apartments","Sesa Hotel","Ionion Beach Hotel","Atlon Hotel","Flevas Mill Hotel","Thomas Apartments","Iliovasilema Hotel","Hotel Olympiada","Hotel Orizontas","Hotel Pappas","Hotel Paradise","Hotel Preveza City","Hotel Sirios","Marieva Apartments","Filanthi Hotel","Faros Apartments","Constantin Studios","Thesmos Vollage"];
+					
+					/*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
+					autocomplete(document.getElementById("myInput"), countries);
+					</script>					
+ 
+
+</body>
+</html>
